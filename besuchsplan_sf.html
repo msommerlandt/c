@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="de">
 <head>
@@ -6,9 +7,10 @@
 <title>Frühlingsbesuch 2026 in San Francisco</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-html,body{width:100%;height:100%;overflow:hidden;background:#1a2332;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif}
-body{display:flex;justify-content:center;align-items:center}
-.slide{width:2400px;height:1080px;position:relative;background:linear-gradient(160deg,#f8f9fd 0%,#edf0f8 40%,#e4e9f4 100%);overflow:hidden;box-shadow:0 8px 40px rgba(0,0,0,0.4);border-radius:6px}
+html,body{width:100%;min-height:100%;background:#1a2332;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif}
+body{display:flex;justify-content:center;align-items:center;overflow-x:hidden}
+.slide{width:2400px;height:1080px;position:relative;background:linear-gradient(160deg,#f8f9fd 0%,#edf0f8 40%,#e4e9f4 100%);overflow:hidden;box-shadow:0 8px 40px rgba(0,0,0,0.4);border-radius:6px;flex-shrink:0}
+.slide-mobile{display:none;width:100%;max-width:100%;min-height:100vh;flex-direction:column;background:linear-gradient(160deg,#f8f9fd 0%,#edf0f8 50%,#e4e9f4 100%);padding:12px;padding-bottom:24px}
 .accent-bar{position:absolute;top:0;left:0;right:0;height:5px;background:linear-gradient(90deg,#1565c0,#1976d2,#42a5f5,#1976d2,#1565c0);border-radius:6px 6px 0 0}
 .title{position:absolute;top:10px;width:100%;text-align:center;font-size:34px;font-weight:700;color:#0d47a1;letter-spacing:.5px}
 .subtitle{position:absolute;top:52px;width:100%;text-align:center;font-size:17px;color:#5c6bc0;font-weight:400;letter-spacing:.3px}
@@ -31,7 +33,31 @@ body{display:flex;justify-content:center;align-items:center}
 .legend-dot{width:18px;height:18px;border-radius:50%;flex-shrink:0;box-shadow:0 1px 3px rgba(0,0,0,.15)}
 .start-mk{position:absolute;width:18px;height:18px;border-radius:50%;background:#0d47a1;transform:translate(-50%,-50%);box-shadow:0 2px 4px rgba(0,0,0,.15);z-index:6}
 .end-mk{position:absolute;z-index:6}
-@media print{html,body{background:#fff}.slide{box-shadow:none;border-radius:0}}
+@media (max-width:768px){
+  body{overflow:auto;align-items:stretch;padding:0;-webkit-overflow-scrolling:touch}
+  .slide{display:none!important}
+  .slide-mobile{display:flex!important}
+  .m-title{font-size:22px;padding:8px 0 2px}
+  .m-subtitle{font-size:14px;padding-bottom:12px}
+  .m-timeline{padding-left:20px;border-left:3px solid #1565c0;margin-left:10px}
+  .m-day{margin-bottom:16px;position:relative}
+  .m-day::before{content:'';position:absolute;left:-26px;top:8px;width:14px;height:14px;border-radius:50%;background:#1565c0;border:2px solid rgba(255,255,255,.9);box-shadow:0 1px 4px rgba(0,0,0,.2)}
+  .m-day-box{background:rgba(255,255,255,.92);border-radius:8px;padding:12px 14px;margin-left:4px;border:1px solid rgba(21,101,192,.12);box-shadow:0 2px 8px rgba(0,0,0,.06)}
+  .m-day-box.weekend-date{background:rgba(215,235,255,.92)}
+  .m-day-date{font-size:15px;font-weight:700;color:#0d47a1;margin-bottom:6px;padding-bottom:4px;border-bottom:1.5px solid rgba(21,101,192,.15)}
+  .m-day-event{display:flex;align-items:flex-start;gap:8px;margin-top:6px}
+  .m-ev-bullet{width:10px;height:10px;border-radius:50%;margin-top:5px;flex-shrink:0}
+  .m-ev-text{font-size:15px;line-height:1.45;color:#37474f}
+  .m-ev-text.highlight{font-weight:700}
+  .m-legend{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;padding:16px 0 8px;font-size:14px;color:#455a64}
+  .m-legend-item{display:flex;align-items:center;gap:6px}
+  .m-legend-dot{width:10px;height:10px;border-radius:50%}
+}
+@media (min-width:769px){
+  html,body{overflow:hidden}
+  .slide-mobile{display:none!important}
+}
+@media print{html,body{background:#fff}.slide{box-shadow:none;border-radius:0}.slide-mobile{display:none!important}.slide{display:block!important}}
 </style>
 </head>
 <body>
@@ -50,9 +76,11 @@ body{display:flex;justify-content:center;align-items:center}
   <div class="start-mk" style="left:50px;top:100px"></div>
   <svg class="end-mk" style="left:2340px;top:959px;width:22px;height:22px" viewBox="0 0 22 22"><polygon points="2,2 20,11 2,20" fill="#0d47a1"/></svg>
 </div>
+<div class="slide-mobile" id="slideMobile"></div>
 <script>
 (function(){
   var S=document.getElementById('slide');
+  var M=document.getElementById('slideMobile');
   var C={travel:'#c62828',school:'#1565c0',family:'#2e7d32',activity:'#e65100',leisure:'#7b1fa2',special:'#00838f'};
 
   var W1=[
@@ -157,6 +185,44 @@ body{display:flex;justify-content:center;align-items:center}
   for(var i=0;i<7;i++) addDay(W1[i],SX+i*SP,TY,true);
   for(var i=0;i<7;i++) addDay(W2[i],SX+i*SP,BY,false);
 
+  function addMobileDay(day){
+    var wrap=el('div','m-day');
+    var box=el('div','m-day-box'+(/^(Samstag|Sonntag)/.test(day.d)?' weekend-date':''));
+    var hd=el('div','m-day-date');
+    hd.textContent=day.d;
+    box.appendChild(hd);
+    day.ev.forEach(function(e){
+      var row=el('div','m-day-event');
+      row.appendChild(el('div','m-ev-bullet',{backgroundColor:C[e.c]}));
+      var txt=el('div','m-ev-text'+(e.h?' highlight':''));
+      txt.textContent=e.t;
+      row.appendChild(txt);
+      box.appendChild(row);
+    });
+    wrap.appendChild(box);
+    return wrap;
+  }
+  var mTitle=el('div','m-title');
+  mTitle.textContent='Frühlingsbesuch 2026 in San Francisco';
+  mTitle.style.cssText='font-weight:700;color:#0d47a1;text-align:center';
+  var mSub=el('div','m-subtitle');
+  mSub.textContent='Donnerstag, 19. März – Mittwoch, 1. April 2026';
+  mSub.style.cssText='color:#5c6bc0;text-align:center';
+  var mTimeline=el('div','m-timeline');
+  var allDays=W1.concat(W2);
+  allDays.forEach(function(d){mTimeline.appendChild(addMobileDay(d))});
+  var mLeg=el('div','m-legend');
+  [{k:'travel',l:'Reise'},{k:'school',l:'Schule'},{k:'family',l:'Familie'},{k:'activity',l:'Aktivitäten'},{k:'leisure',l:'Freizeit'},{k:'special',l:'Besonderes'}].forEach(function(c){
+    var it=el('div','m-legend-item');
+    it.appendChild(el('span','m-legend-dot',{background:C[c.k]}));
+    it.appendChild(document.createTextNode(c.l));
+    mLeg.appendChild(it);
+  });
+  M.appendChild(mTitle);
+  M.appendChild(mSub);
+  M.appendChild(mTimeline);
+  M.appendChild(mLeg);
+
   var leg=el('div','legend');
   [{k:'travel',l:'Reise'},{k:'school',l:'Schule'},{k:'family',l:'Familie'},{k:'activity',l:'Aktivitäten'},{k:'leisure',l:'Freizeit'},{k:'special',l:'Besonderes'}].forEach(function(c){
     var it=el('div','legend-item');
@@ -167,9 +233,16 @@ body{display:flex;justify-content:center;align-items:center}
   S.appendChild(leg);
 
   function fit(){
-    var s=Math.min(window.innerWidth/2400,window.innerHeight/1080);
-    S.style.transform='scale('+s+')';
-    S.style.transformOrigin='center center';
+    var w=window.innerWidth;
+    if(w<=768){
+      S.style.transform='none';
+      S.style.display='none';
+    }else{
+      S.style.display='block';
+      var s=Math.min(w/2400,window.innerHeight/1080);
+      S.style.transform='scale('+s+')';
+      S.style.transformOrigin='center center';
+    }
   }
   window.addEventListener('resize',fit);
   fit();
