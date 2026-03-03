@@ -28,7 +28,7 @@ body{display:flex;justify-content:center;align-items:center;overflow-x:hidden}
 .day-date{font-size:16px;font-weight:700;color:#0d47a1;margin-bottom:5px;padding-bottom:4px;border-bottom:1.5px solid rgba(21,101,192,.12)}
 .day-box.weekend-date{background:rgba(215,235,255,.88)}
 .day-event{display:flex;align-items:flex-start;gap:7px;margin-top:5px}
-.ev-bullet{width:12px;height:12px;border-radius:50%;margin-top:4px;flex-shrink:0;box-shadow:0 1px 2px rgba(0,0,0,.15)}
+.ev-bullet{width:12px;height:12px;border-radius:50%;margin-top:10px;flex-shrink:0;box-shadow:0 1px 2px rgba(0,0,0,.15)}
 .ev-text{font-size:23.5px;line-height:1.4;color:#37474f}
 .ev-text.highlight{font-weight:700}
 .legend{position:absolute;top:78px;left:50%;transform:translateX(-50%);display:flex;gap:28px;z-index:7}
@@ -44,7 +44,8 @@ body{display:flex;justify-content:center;align-items:center;overflow-x:hidden}
   .lang-switch button{padding:5px 10px}
   .m-title{font-size:22px;padding:8px 0 2px}
   .m-subtitle{font-size:14px;padding-bottom:12px}
-  .m-timeline{padding-left:20px;border-left:3px solid #1565c0;margin-left:10px}
+  .m-timeline{padding-left:20px;border-left:3px solid #1565c0;margin-left:10px;position:relative;padding-bottom:20px}
+  .m-timeline::after{content:'';position:relative;top:43px;left:-32px;width:0;height:0;border-left:10px solid transparent;border-right:10px solid transparent;border-top:14px solid #1565c0}
   .m-day{margin-bottom:16px;position:relative}
   .m-day::before{content:'';position:absolute;left:-30px;top:8px;width:14px;height:14px;border-radius:50%;background:#1565c0;border:2px solid rgba(255,255,255,.9);box-shadow:0 1px 4px rgba(0,0,0,.2)}
   .m-day-box{background:rgba(255,255,255,.92);border-radius:8px;padding:12px 14px;margin-left:4px;border:1px solid rgba(21,101,192,.12);box-shadow:0 2px 8px rgba(0,0,0,.06)}
@@ -88,6 +89,7 @@ var LEGEND_KEYS=['travel','school','family','activity','leisure','special'];
 var EVENTS=[
   [
     {d:'Donnerstag, 19. März',ev:[
+      {t:'Bahnfahrt zum Flughafen, Abfahrt 8:31 Uhr in Gotha, Ankunft 11:15 Uhr',c:'travel'},
       {t:'Flug nach San Francisco – Abflug Frankfurt um 13:20 Uhr, Ankunft in San Francisco um 16:55 Uhr Ortszeit',c:'travel'}
     ]},
     {d:'Freitag, 20. März',ev:[
